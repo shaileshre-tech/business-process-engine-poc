@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_0o59bd6" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.2.3">
+  <bpmn:process id="loan_approval_process" name="loan approval process" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>SequenceFlow_14pcn8t</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_14pcn8t" sourceRef="StartEvent_1" targetRef="submit_loan_application" />
+    <bpmn:userTask id="submit_loan_application" name="submit loan application">
+      <bpmn:incoming>SequenceFlow_14pcn8t</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1nr7r6l</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="SequenceFlow_1nr7r6l" sourceRef="submit_loan_application" targetRef="validate_form" />
+    <bpmn:businessRuleTask id="validate_form" name="validate form" camunda:resultVariable="formValidationResult" camunda:decisionRef="loan_form_validation_dmn" camunda:mapDecisionResult="singleEntry">
+      <bpmn:incoming>SequenceFlow_1nr7r6l</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1dqc83r</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:exclusiveGateway id="ExclusiveGateway_1mlnrdr">
+      <bpmn:incoming>SequenceFlow_1dqc83r</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0jc50fc</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_0pasywa</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="SequenceFlow_1dqc83r" sourceRef="validate_form" targetRef="ExclusiveGateway_1mlnrdr" />
+    <bpmn:sequenceFlow id="SequenceFlow_0jc50fc" sourceRef="ExclusiveGateway_1mlnrdr" targetRef="validate_pan">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{formValidationResult == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:serviceTask id="validate_pan" name="validate pan" camunda:delegateExpression="${panValidationDelegate}">
+      <bpmn:incoming>SequenceFlow_0jc50fc</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1c6zjdz</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_0pasywa" sourceRef="ExclusiveGateway_1mlnrdr" targetRef="form_validation_failure">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{formValidationResult == false}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sendTask id="form_validation_failure" name="rejection notification - form validation failure" camunda:delegateExpression="${emailNotificationDelegate}">
+      <bpmn:incoming>SequenceFlow_0pasywa</bpmn:incoming>
+    </bpmn:sendTask>
+    <bpmn:exclusiveGateway id="ExclusiveGateway_0l1hoih">
+      <bpmn:incoming>SequenceFlow_1c6zjdz</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0quxjbd</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_1f29whg</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="SequenceFlow_1c6zjdz" sourceRef="validate_pan" targetRef="ExclusiveGateway_0l1hoih" />
+    <bpmn:sequenceFlow id="SequenceFlow_0quxjbd" sourceRef="ExclusiveGateway_0l1hoih" targetRef="ExclusiveGateway_0x0uuth">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{panValidationResult == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:parallelGateway id="ExclusiveGateway_0x0uuth">
+      <bpmn:incoming>SequenceFlow_0quxjbd</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0p6xvsq</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_10woe9w</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="SequenceFlow_1f29whg" sourceRef="ExclusiveGateway_0l1hoih" targetRef="pan_validation_failure">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{panValidationResult == false}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sendTask id="pan_validation_failure" name="rejection notification - pan validation failure" camunda:delegateExpression="${emailNotificationDelegate}">
+      <bpmn:incoming>SequenceFlow_1f29whg</bpmn:incoming>
+    </bpmn:sendTask>
+    <bpmn:sequenceFlow id="SequenceFlow_0p6xvsq" sourceRef="ExclusiveGateway_0x0uuth" targetRef="prepare_credit_report_request" />
+    <bpmn:scriptTask id="prepare_credit_report_request" name="prepare credit report request">
+      <bpmn:incoming>SequenceFlow_0p6xvsq</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0ifvcuc</bpmn:outgoing>
+      <bpmn:script>System.out.println("prepare credit report request");</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="SequenceFlow_10woe9w" sourceRef="ExclusiveGateway_0x0uuth" targetRef="perform_internal_check" />
+    <bpmn:scriptTask id="perform_internal_check" name="perform internal check">
+      <bpmn:incoming>SequenceFlow_10woe9w</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_16z9eul</bpmn:outgoing>
+      <bpmn:script>System.out.println("perform internal check");</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="SequenceFlow_16z9eul" sourceRef="perform_internal_check" targetRef="ExclusiveGateway_1k9klal" />
+    <bpmn:inclusiveGateway id="ExclusiveGateway_1k9klal">
+      <bpmn:incoming>SequenceFlow_16z9eul</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_0ifvcuc</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1nvisa2</bpmn:outgoing>
+    </bpmn:inclusiveGateway>
+    <bpmn:sequenceFlow id="SequenceFlow_0ifvcuc" sourceRef="prepare_credit_report_request" targetRef="ExclusiveGateway_1k9klal" />
+    <bpmn:sequenceFlow id="SequenceFlow_1nvisa2" sourceRef="ExclusiveGateway_1k9klal" targetRef="process_credit_report_request" />
+    <bpmn:scriptTask id="process_credit_report_request" name="process credit report request">
+      <bpmn:incoming>SequenceFlow_1nvisa2</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_04139mu</bpmn:outgoing>
+      <bpmn:script>System.out.println("process credit report request");</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="SequenceFlow_04139mu" sourceRef="process_credit_report_request" targetRef="to_be_continued" />
+    <bpmn:endEvent id="to_be_continued" name="to be continued...">
+      <bpmn:incoming>SequenceFlow_04139mu</bpmn:incoming>
+      <bpmn:terminateEventDefinition />
+    </bpmn:endEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="loan_approval_process">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="173" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_14pcn8t_di" bpmnElement="SequenceFlow_14pcn8t">
+        <di:waypoint x="209" y="120" />
+        <di:waypoint x="259" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_1w200q9_di" bpmnElement="submit_loan_application">
+        <dc:Bounds x="259" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1nr7r6l_di" bpmnElement="SequenceFlow_1nr7r6l">
+        <di:waypoint x="359" y="120" />
+        <di:waypoint x="409" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BusinessRuleTask_1p1g7ta_di" bpmnElement="validate_form">
+        <dc:Bounds x="409" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ExclusiveGateway_1mlnrdr_di" bpmnElement="ExclusiveGateway_1mlnrdr" isMarkerVisible="true">
+        <dc:Bounds x="559" y="95" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1dqc83r_di" bpmnElement="SequenceFlow_1dqc83r">
+        <di:waypoint x="509" y="120" />
+        <di:waypoint x="559" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0jc50fc_di" bpmnElement="SequenceFlow_0jc50fc">
+        <di:waypoint x="609" y="120" />
+        <di:waypoint x="659" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_1ayzg2m_di" bpmnElement="validate_pan">
+        <dc:Bounds x="659" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0pasywa_di" bpmnElement="SequenceFlow_0pasywa">
+        <di:waypoint x="584" y="95" />
+        <di:waypoint x="584" y="20" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="555" y="55" width="89" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="SendTask_05kaoy7_di" bpmnElement="form_validation_failure">
+        <dc:Bounds x="534" y="-60" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ExclusiveGateway_0l1hoih_di" bpmnElement="ExclusiveGateway_0l1hoih" isMarkerVisible="true">
+        <dc:Bounds x="809" y="95" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1c6zjdz_di" bpmnElement="SequenceFlow_1c6zjdz">
+        <di:waypoint x="759" y="120" />
+        <di:waypoint x="809" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0quxjbd_di" bpmnElement="SequenceFlow_0quxjbd">
+        <di:waypoint x="859" y="120" />
+        <di:waypoint x="909" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ParallelGateway_07gwujw_di" bpmnElement="ExclusiveGateway_0x0uuth">
+        <dc:Bounds x="909" y="95" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1f29whg_di" bpmnElement="SequenceFlow_1f29whg">
+        <di:waypoint x="834" y="95" />
+        <di:waypoint x="834" y="20" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="SendTask_0t49do0_di" bpmnElement="pan_validation_failure">
+        <dc:Bounds x="784" y="-60" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0p6xvsq_di" bpmnElement="SequenceFlow_0p6xvsq">
+        <di:waypoint x="934" y="95" />
+        <di:waypoint x="934" y="44" />
+        <di:waypoint x="1037" y="44" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ScriptTask_1isthrf_di" bpmnElement="prepare_credit_report_request">
+        <dc:Bounds x="1037" y="4" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_10woe9w_di" bpmnElement="SequenceFlow_10woe9w">
+        <di:waypoint x="934" y="145" />
+        <di:waypoint x="934" y="197" />
+        <di:waypoint x="1037" y="197" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ScriptTask_02fr6uo_di" bpmnElement="perform_internal_check">
+        <dc:Bounds x="1037" y="157" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_16z9eul_di" bpmnElement="SequenceFlow_16z9eul">
+        <di:waypoint x="1137" y="197" />
+        <di:waypoint x="1238" y="197" />
+        <di:waypoint x="1238" y="145" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="InclusiveGateway_1984cqn_di" bpmnElement="ExclusiveGateway_1k9klal">
+        <dc:Bounds x="1213" y="95" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0ifvcuc_di" bpmnElement="SequenceFlow_0ifvcuc">
+        <di:waypoint x="1137" y="44" />
+        <di:waypoint x="1238" y="44" />
+        <di:waypoint x="1238" y="95" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1nvisa2_di" bpmnElement="SequenceFlow_1nvisa2">
+        <di:waypoint x="1263" y="120" />
+        <di:waypoint x="1339" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ScriptTask_0qbeu50_di" bpmnElement="process_credit_report_request">
+        <dc:Bounds x="1339" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_04139mu_di" bpmnElement="SequenceFlow_04139mu">
+        <di:waypoint x="1439" y="120" />
+        <di:waypoint x="1515" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_197oxe2_di" bpmnElement="to_be_continued">
+        <dc:Bounds x="1515" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1491" y="145" width="84" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

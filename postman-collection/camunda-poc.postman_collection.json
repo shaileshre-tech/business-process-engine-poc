@@ -1,0 +1,209 @@
+{
+	"info": {
+		"_postman_id": "ef3d826e-7b7c-440a-9821-05d546f23dd3",
+		"name": "camunda-poc",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Process Instance Start By Key",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "superSecret",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "kermit",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"variables\":\r\n    {\r\n    \t\"name\": {\"value\": \"abc\"},\r\n    \t\"loanAmount\": {\"value\": \"2000\"}\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/rest/engine/default/process-definition/key/loan_approval_process/start",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"engine",
+						"default",
+						"process-definition",
+						"key",
+						"loan_approval_process",
+						"start"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task All Process Get",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "superSecret",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "kermit",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/rest/engine/default/task?processInstanceId=a9832c21-810b-11e9-a945-4851b718227a",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"engine",
+						"default",
+						"task"
+					],
+					"query": [
+						{
+							"key": "processInstanceId",
+							"value": "a9832c21-810b-11e9-a945-4851b718227a"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task Id Get",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "superSecret",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "kermit",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/rest/engine/default/task/0f8f805c-8081-11e9-af9a-4851b718227a",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"engine",
+						"default",
+						"task",
+						"0f8f805c-8081-11e9-af9a-4851b718227a"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task Complete",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "superSecret",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "kermit",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"variables\":\r\n    {\"name\": {\"value\": \"abc\"},\r\n    \"address\": {\"value\": \"pune\"},\r\n    \"loanAmount\": {\"value\": 2000},\r\n    \"panNumber\": {\"value\": \"abcde12345\"}\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/rest/engine/default/task/a986d5a9-810b-11e9-a945-4851b718227a/complete",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"engine",
+						"default",
+						"task",
+						"a986d5a9-810b-11e9-a945-4851b718227a",
+						"complete"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

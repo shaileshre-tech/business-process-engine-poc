@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/DMN/20151101/dmn.xsd" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/1.0" id="Definitions_0xb26md" name="DRD" namespace="http://camunda.org/schema/1.0/dmn">
+  <decision id="loan_form_validation_dmn" name="loan form validation dmn">
+    <extensionElements>
+      <biodi:bounds x="150" y="150" width="180" height="80" />
+    </extensionElements>
+    <decisionTable id="decisionTable_1" hitPolicy="FIRST">
+      <input id="input_1">
+        <inputExpression id="inputExpression_1" typeRef="string">
+          <text>name</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0bq186a">
+        <inputExpression id="LiteralExpression_05g0w3d" typeRef="long">
+          <text>loanAmount</text>
+        </inputExpression>
+      </input>
+      <output id="output_1" name="formValidationResult" typeRef="boolean" />
+      <rule id="DecisionRule_0g5qz3z">
+        <inputEntry id="UnaryTests_10yodi9">
+          <text>""</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0zzejx6">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1vzb0qo">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1vy9yo7">
+        <inputEntry id="UnaryTests_1091ft9">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1qunhvx">
+          <text>&lt;=1000</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1l4wq6l">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0fu9yk3">
+        <inputEntry id="UnaryTests_1phjv8z" expressionLanguage="juel">
+          <text>not("")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_05lmtas">
+          <text>&gt;1000</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_179v781">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>

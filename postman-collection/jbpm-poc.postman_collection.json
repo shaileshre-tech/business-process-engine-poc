@@ -1,0 +1,432 @@
+{
+	"info": {
+		"_postman_id": "3b376125-c414-4dc9-b2fd-5fa5107842be",
+		"name": "jBPM-poc",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Process Instance List Get",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "krisv",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "krisv",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/kie-server/services/rest/server/containers/loan-process-poc_1.0.0-SNAPSHOT/processes/instances",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kie-server",
+						"services",
+						"rest",
+						"server",
+						"containers",
+						"loan-process-poc_1.0.0-SNAPSHOT",
+						"processes",
+						"instances"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Process Instance Details By Id",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "krisv",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "krisv",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/kie-server/services/rest/server/containers/loan-process-poc_1.0.0-SNAPSHOT/processes/instances/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kie-server",
+						"services",
+						"rest",
+						"server",
+						"containers",
+						"loan-process-poc_1.0.0-SNAPSHOT",
+						"processes",
+						"instances",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Process Instance Start By Id",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "krisv",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "krisv",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"loanApplicationDetails\": {\r\n\t\t\"LoanApplicationDetails\": {\r\n\t\t\t  \"formValidationResult\": false\r\n\t\t}\r\n\t},\r\n\t\"panValidationResult\": false\r\n}\r\n"
+				},
+				"url": {
+					"raw": "http://localhost:8080/kie-server/services/rest/server/containers/loan-process-poc_1.0.0-SNAPSHOT/processes/loan-process-poc.loan-approval-process/instances",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kie-server",
+						"services",
+						"rest",
+						"server",
+						"containers",
+						"loan-process-poc_1.0.0-SNAPSHOT",
+						"processes",
+						"loan-process-poc.loan-approval-process",
+						"instances"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Process Definition List Get",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "krisv",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "krisv",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/kie-server/services/rest/server/containers/loan-process-poc_1.0.0-SNAPSHOT/processes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kie-server",
+						"services",
+						"rest",
+						"server",
+						"containers",
+						"loan-process-poc_1.0.0-SNAPSHOT",
+						"processes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task Get By Id",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "loan-applicant-user",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "loan-applicant-user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Cache-Control",
+						"value": "no-cache",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/kie-server/services/rest/server/containers/loan-process-poc_1.0.0-SNAPSHOT/tasks/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kie-server",
+						"services",
+						"rest",
+						"server",
+						"containers",
+						"loan-process-poc_1.0.0-SNAPSHOT",
+						"tasks",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task Complete By Id",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "loan-applicant-user",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "loan-applicant-user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"loanApplicationDetails\": {\r\n\t\t\"LoanApplicationDetails\": {\r\n\t\t\t  \"name\": \"name\",\r\n\t\t\t  \"address\": \"address\",\r\n\t\t\t  \"panNumber\": \"a12345678a\",\r\n\t\t\t  \"passportNumber\": \"a123b456c\",\r\n\t\t\t  \"loanAmount\": 1500,\r\n\t\t\t  \"loanInterestRate\": 8,\r\n\t\t\t  \"loanTenure\": 10,\r\n\t\t\t  \"formValidationResult\": false\r\n\t\t}\r\n\t}\r\n}\r\n"
+				},
+				"url": {
+					"raw": "http://localhost:8080/kie-server/services/rest/server/containers/loan-process-poc_1.0.0-SNAPSHOT/tasks/1/states/completed",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kie-server",
+						"services",
+						"rest",
+						"server",
+						"containers",
+						"loan-process-poc_1.0.0-SNAPSHOT",
+						"tasks",
+						"1",
+						"states",
+						"completed"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task Claimed By Id",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "loan-applicant-user",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "loan-applicant-user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/kie-server/services/rest/server/containers/loan-process-poc_1.0.0-SNAPSHOT/tasks/1/states/claimed",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kie-server",
+						"services",
+						"rest",
+						"server",
+						"containers",
+						"loan-process-poc_1.0.0-SNAPSHOT",
+						"tasks",
+						"1",
+						"states",
+						"claimed"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task Started By Id",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "loan-applicant-user",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "loan-applicant-user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/kie-server/services/rest/server/containers/loan-process-poc_1.0.0-SNAPSHOT/tasks/1/states/started",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kie-server",
+						"services",
+						"rest",
+						"server",
+						"containers",
+						"loan-process-poc_1.0.0-SNAPSHOT",
+						"tasks",
+						"1",
+						"states",
+						"started"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

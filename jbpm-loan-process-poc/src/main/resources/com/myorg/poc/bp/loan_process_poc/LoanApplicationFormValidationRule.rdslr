@@ -1,0 +1,12 @@
+package com.myorg.poc.bp.loan_process_poc;
+
+import java.lang.Number;
+
+rule "LoanApplicationFormValidationRule"
+	dialect "mvel"
+	ruleflow-group "loanApplicationFormValidationGroup"
+	when
+		>loanApplicationDetails : LoanApplicationDetails( name != null , name != "" , loanAmount > 1000 )
+	then
+		>loanApplicationDetails.setFormValidationResult( true );
+end

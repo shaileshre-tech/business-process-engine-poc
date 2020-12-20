@@ -1,0 +1,28 @@
+camunda.bpm:
+  admin-user:
+    id: kermit
+    password: superSecret
+    firstName: Kermit
+  filter:
+    create: All tasks
+
+#Camunda cockpit multiple node support changes
+spring :
+  session:
+    store-type: jdbc
+  datasource:
+    url: jdbc:h2:mem:demodb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driverClassName: org.h2.Driver
+  flyway:
+    url: jdbc:h2:mem:demodb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    baseline-on-migrate: true
+    out-of-order: false
+    ignore-missing-migrations: false
+
+camunda:
+  dummyWebservice:
+    panValidationUrl: http://localhost:8081/pan/validate
+  security:
+    authenticationProvider: com.myorg.poc.workflow.camunda.security.provider.SpringSecurityAuthenticationProvider
